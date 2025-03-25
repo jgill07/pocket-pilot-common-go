@@ -48,7 +48,6 @@ func NewAuthMiddleware(config *Config) (gin.HandlerFunc, error) {
 		return nil, err
 	}
 
-	// TODO: Add custom error handler
 	middleware := jwtmiddleware.New(jwtValidator.ValidateToken)
 
 	return adapter.Wrap(middleware.CheckJWT), nil

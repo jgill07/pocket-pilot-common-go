@@ -6,6 +6,7 @@ func SetupRouter(healthCheck gin.HandlerFunc) *gin.Engine {
 	router := gin.New()
 	router.Use(gin.Recovery())
 	router.ContextWithFallback = true
+	router.Use(Logger)
 
 	if healthCheck != nil {
 		router.GET("/healthz", healthCheck)
