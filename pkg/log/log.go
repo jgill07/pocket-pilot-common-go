@@ -3,47 +3,44 @@ package log
 
 import "go.uber.org/zap"
 
-type Logger struct {
-	zap *zap.Logger
-}
+var logger *zap.Logger = safeInitLogger()
 
-func NewLogger() (*Logger, error) {
+func safeInitLogger() *zap.Logger {
 	l, err := zap.NewProduction()
 	if err != nil {
-		return nil, err
+		panic(err)
 	}
-
-	return &Logger{zap: l}, nil
+	return l
 }
 
-func (l *Logger) Info(msg string, fields ...zap.Field) {
-	l.zap.Info(msg, fields...)
+func Info(msg string, fields ...zap.Field) {
+	logger.Info(msg, fields...)
 }
 
-func (l *Logger) Debug(msg string, fields ...zap.Field) {
-	l.zap.Debug(msg, fields...)
+func Debug(msg string, fields ...zap.Field) {
+	logger.Debug(msg, fields...)
 }
 
-func (l *Logger) Error(msg string, fields ...zap.Field) {
-	l.zap.Error(msg, fields...)
+func Error(msg string, fields ...zap.Field) {
+	logger.Error(msg, fields...)
 }
 
-func (l *Logger) Fatal(msg string, fields ...zap.Field) {
-	l.zap.Fatal(msg, fields...)
+func Fatal(msg string, fields ...zap.Field) {
+	logger.Fatal(msg, fields...)
 }
 
-func (l *Logger) Sync() error {
-	return l.zap.Sync()
+func Sync() error {
+	return logger.Sync()
 }
 
-func (l *Logger) WithField(key string, value interface{}) *Logger {
-	return &Logger{zap: l.zap.With(zap.Any(key, value))}
+func WithField(key string, value interface{}) *zap.Logger {
+	return logger.With(zap.Any(key, value))
 }
 
-func (l *Logger) WithFields(fields ...zap.Field) *Logger {
-	return &Logger{zap: l.zap.With(fields...)}
+func WithFields(fields ...zap.Field) *zap.Logger {
+	return logger.With(fields...)
 }
 
-func (l *Logger) WithError(err error) *Logger {
-	return &Logger{zap: l.zap.With(zap.Error(err))}
+func WithError(err error) *zap.Logger {
+	return logger.With(zap.Error(err))
 }
