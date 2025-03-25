@@ -1,7 +1,10 @@
 // Logger is a wrapper around the zap logger
 package log
 
-import "go.uber.org/zap"
+import (
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
+)
 
 var logger *zap.Logger = safeInitLogger()
 
@@ -11,6 +14,31 @@ func safeInitLogger() *zap.Logger {
 		panic(err)
 	}
 	return l
+}
+
+func InitLogger(level string) {
+	lvl, err := zap.ParseAtomicLevel(level)
+	if err != nil {
+		panic(err)
+	}
+	cfg := zap.Config{
+		Level:            lvl,
+		Development:      false,
+		Encoding:         "json",
+		OutputPaths:      []string{"stdout"},
+		ErrorOutputPaths: []string{"stderr"},
+		EncoderConfig: zapcore.EncoderConfig{
+			TimeKey:    "ts",
+			LevelKey:   "level",
+			NameKey:    "logger",
+			CallerKey:  "caller",
+			MessageKey: "msg",
+		},
+	}
+	logger, err = cfg.Build()
+	if err != nil {
+		panic(err)
+	}
 }
 
 func Info(msg string, fields ...zap.Field) {
