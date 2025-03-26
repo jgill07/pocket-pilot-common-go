@@ -36,6 +36,8 @@ github.com/jgill07/pocket-pilot-common-go/pkg/log v0.0.1 h1:FdS2NLrO04iRy/QJtiEU
 github.com/jgill07/pocket-pilot-common-go/pkg/log v0.0.1/go.mod h1:TqB4cTxTg+mAU9+k/H8imPVmu5aqgul+NW901K5a40Y=
 github.com/jgill07/pocket-pilot-common-go/pkg/log v0.0.2 h1:nuv1/EeUn7S5ZQYwZPw/RJW1+86DIt8HNzpdO7vaIbY=
 github.com/jgill07/pocket-pilot-common-go/pkg/log v0.0.2/go.mod h1:TqB4cTxTg+mAU9+k/H8imPVmu5aqgul+NW901K5a40Y=
+github.com/jgill07/pocket-pilot-common-go/pkg/log v0.0.3 h1:l5/jb+7Txemo7Qjkorj7ZiqO/PiBgSLODfRtb/8jlRg=
+github.com/jgill07/pocket-pilot-common-go/pkg/log v0.0.3/go.mod h1:TqB4cTxTg+mAU9+k/H8imPVmu5aqgul+NW901K5a40Y=
 github.com/json-iterator/go v1.1.12 h1:PV8peI4a0ysnczrg+LtxykD8LfKY9ML6u2jnxaEnrnM=
 github.com/json-iterator/go v1.1.12/go.mod h1:e30LSqwooZae/UwlEbR2852Gd8hjQvJoHmT4TnhNGBo=
 github.com/klauspost/cpuid/v2 v2.0.9/go.mod h1:FInQzS24/EEf25PyTYn52gqo7WaD8xa0213Md/qVLRg=
