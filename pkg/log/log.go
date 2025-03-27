@@ -2,6 +2,8 @@
 package log
 
 import (
+	"os"
+
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
@@ -21,24 +23,31 @@ func InitLogger(level string) {
 	if err != nil {
 		panic(err)
 	}
+
+	encoderCfg := zap.NewProductionEncoderConfig()
+	encoderCfg.TimeKey = "timestamp"
+	encoderCfg.EncodeTime = zapcore.ISO8601TimeEncoder
+	encoderCfg.LevelKey = "level"
+	encoderCfg.MessageKey = "msg"
+	encoderCfg.CallerKey = "caller"
+	encoderCfg.StacktraceKey = "stacktrace"
+	encoderCfg.LineEnding = zapcore.DefaultLineEnding
+	encoderCfg.EncodeLevel = zapcore.CapitalLevelEncoder
+
 	cfg := zap.Config{
-		Level:            lvl,
-		Development:      false,
-		Encoding:         "json",
-		OutputPaths:      []string{"stdout"},
-		ErrorOutputPaths: []string{"stderr"},
-		EncoderConfig: zapcore.EncoderConfig{
-			TimeKey:    "ts",
-			LevelKey:   "level",
-			NameKey:    "logger",
-			CallerKey:  "caller",
-			MessageKey: "msg",
+		Level:             lvl,
+		Development:       false,
+		Encoding:          "json",
+		DisableCaller:     false,
+		DisableStacktrace: false,
+		OutputPaths:       []string{"stdout"},
+		ErrorOutputPaths:  []string{"stderr"},
+		EncoderConfig:     encoderCfg,
+		InitialFields: map[string]interface{}{
+			"pid": os.Getpid(),
 		},
 	}
-	logger, err = cfg.Build()
-	if err != nil {
-		panic(err)
-	}
+	logger = zap.Must(cfg.Build())
 }
 
 func Info(msg string, fields ...zap.Field) {
