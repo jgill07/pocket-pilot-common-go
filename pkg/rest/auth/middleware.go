@@ -19,11 +19,11 @@ var (
 )
 
 func NewAuthMiddleware(config *Config) (gin.HandlerFunc, error) {
-	if len(config.IssueUrl) == 0 || len(config.Audiences) == 0 {
+	if len(config.IssuerUrl) == 0 || len(config.Audiences) == 0 {
 		return nil, errors.New("Audience and Issuer URL are required")
 	}
 
-	parsedIssuerUrl, err := url.Parse(config.IssueUrl)
+	parsedIssuerUrl, err := url.Parse(config.IssuerUrl)
 	if err != nil {
 		return nil, err
 	}
