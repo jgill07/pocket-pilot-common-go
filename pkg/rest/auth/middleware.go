@@ -8,12 +8,12 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/BishopFox/telemetry/log"
 	jwtmiddleware "github.com/auth0/go-jwt-middleware/v2"
 	"github.com/auth0/go-jwt-middleware/v2/jwks"
 	"github.com/auth0/go-jwt-middleware/v2/validator"
 	"github.com/gin-gonic/gin"
 	adapter "github.com/gwatts/gin-adapter"
+	"github.com/jgill07/pocket-pilot-common-go/pkg/log"
 )
 
 var (
