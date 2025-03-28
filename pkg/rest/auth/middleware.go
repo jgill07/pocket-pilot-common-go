@@ -4,9 +4,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net/http"
 	"net/url"
 	"time"
 
+	"github.com/BishopFox/telemetry/log"
 	jwtmiddleware "github.com/auth0/go-jwt-middleware/v2"
 	"github.com/auth0/go-jwt-middleware/v2/jwks"
 	"github.com/auth0/go-jwt-middleware/v2/validator"
@@ -48,14 +50,19 @@ func NewAuthMiddleware(config *Config) (gin.HandlerFunc, error) {
 		return nil, err
 	}
 
-	middleware := jwtmiddleware.New(jwtValidator.ValidateToken)
+	middleware := jwtmiddleware.New(jwtValidator.ValidateToken, jwtmiddleware.WithErrorHandler(errorLogger))
 
 	return adapter.Wrap(middleware.CheckJWT), nil
 }
 
+func errorLogger(resp http.ResponseWriter, req *http.Request, err error) {
+	log.WithError(err).Error("error validating token")
+	jwtmiddleware.DefaultErrorHandler(resp, req, err)
+}
+
 func PocketUserFromContext(ctx context.Context) (*PocketUser, error) {
 	verifyUserErr := fmt.Errorf("unable to verify user")
-	validClaims, ok := ctx.Value(jwtmiddleware.ContextKey{}).(validator.ValidatedClaims)
+	validClaims, ok := ctx.Value(jwtmiddleware.ContextKey{}).(*validator.ValidatedClaims)
 	if !ok {
 		return nil, verifyUserErr
 	}
