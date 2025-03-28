@@ -18,8 +18,8 @@ func safeInitLogger() *zap.Logger {
 	return l
 }
 
-func InitLogger(level string) {
-	lvl, err := zap.ParseAtomicLevel(level)
+func InitLogger(config *Config) {
+	lvl, err := zap.ParseAtomicLevel(config.Level)
 	if err != nil {
 		panic(err)
 	}
